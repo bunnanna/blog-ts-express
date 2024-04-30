@@ -1,9 +1,9 @@
 import { Request, Response, Router } from "express";
 import { validationResult } from "express-validator";
 import { MessageResponse, NoParam } from "../../../utils/type";
+import { registerValidator } from "../middlewares/validator";
 import { CreateUserEntity } from "../usecase/UserEntity";
 import { register } from "../usecase/UserUseCase";
-import { registerValidator } from "./validator";
 
 const userRouter = Router();
 
