@@ -1,6 +1,6 @@
 import { configDotenv } from "dotenv";
 import express from "express";
-import userRouter from "./app/user/controller/UserController";
+import userRouter from "./app/user/controllers/UserController";
 configDotenv();
 const app = express();
 const port = process.env.PORT;
