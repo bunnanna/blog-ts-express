@@ -6,7 +6,7 @@ import UserController from "./app/user/controllers/UserController";
 import userRouter from "./app/user/controllers/UserRouter";
 import UserRepository from "./app/user/repositories/UserRepository";
 import RegisterUseCase from "./app/user/usecase/RegisterUseCase/RegisterUseCase";
-import prisma from "./configs/db";
+import prisma from "./core/dbConnection/prisma";
 import ErrorHandlerMiddleware from "./core/middlewares/ErrorHandlerMiddleware";
 configDotenv();
 const app = express();
