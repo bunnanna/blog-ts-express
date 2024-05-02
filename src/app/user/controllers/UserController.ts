@@ -1,10 +1,10 @@
-import { ControllerBaseClass } from "@src/core/BaseClass/ControllerBaseClass";
+import ControllerBaseClass from "@src/core/BaseClass/ControllerBaseClass";
 import { validationResult } from "express-validator";
 import { inject, injectable } from "inversify";
 import { userIdentifier } from "../di/userIdentifiers";
 import { registerValidator } from "../middlewares/validator";
-import { IRegisterUseCase } from "../usecase/RegisterUseCase/IRegisterUsecase";
-import { IUserController } from "./IUserController";
+import IRegisterUseCase from "../usecase/RegisterUseCase/IRegisterUsecase";
+import IUserController from "./IUserController";
 
 @injectable()
 export default class UserController

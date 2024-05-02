@@ -1,9 +1,9 @@
 import { Container } from "inversify";
-import { IUserController } from "../controllers/IUserController";
+import IUserController from "../controllers/IUserController";
 import UserController from "../controllers/UserController";
-import { IUserRepository } from "../repositories/IUserRepository";
+import IUserRepository from "../repositories/IUserRepository";
 import UserRepository from "../repositories/UserRepository";
-import { IRegisterUseCase } from "../usecase/RegisterUseCase/IRegisterUsecase";
+import IRegisterUseCase from "../usecase/RegisterUseCase/IRegisterUsecase";
 import RegisterUseCase from "../usecase/RegisterUseCase/RegisterUseCase";
 import { userIdentifier } from "./userIdentifiers";
 

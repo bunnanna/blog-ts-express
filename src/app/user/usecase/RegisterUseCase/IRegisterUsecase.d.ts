@@ -1,5 +1,5 @@
 import { CreateUserEntity } from "../../entities/user";
 
-export interface IRegisterUseCase {
+export default interface IRegisterUseCase {
 	execute: (createUser: CreateUserEntity) => Promise<void>;
 }

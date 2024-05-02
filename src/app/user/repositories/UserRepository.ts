@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { inject, injectable } from "inversify";
 import { dbIdentifier } from "../../../core/dbConnection/prisma";
-import { IUserRepository } from "./IUserRepository";
+import IUserRepository from "./IUserRepository";
 import { userSelect } from "./query";
 
 @injectable()

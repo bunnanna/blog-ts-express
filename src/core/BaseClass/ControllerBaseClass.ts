@@ -2,7 +2,7 @@ import { Router } from "express";
 import { injectable } from "inversify";
 
 @injectable()
-export abstract class ControllerBaseClass {
+export default abstract class ControllerBaseClass {
 	router: Router;
 	constructor() {
 		this.router = Router();
