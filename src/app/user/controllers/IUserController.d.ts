@@ -1,7 +1,7 @@
+import { MessageResponse, NoParam } from "@src/core/types/type";
 import { RequestHandler } from "express";
-import { MessageResponse, NoParam } from "../../../core/types/type";
 import { CreateUserEntity } from "../entities/user";
 
-export interface IUserController {
+export default interface IUserController {
 	register: RequestHandler<NoParam, MessageResponse, CreateUserEntity>;
 }

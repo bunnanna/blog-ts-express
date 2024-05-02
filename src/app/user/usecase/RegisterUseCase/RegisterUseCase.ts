@@ -1,9 +1,9 @@
+import { hashPassword } from "@src/core/func/bcrypt";
 import { inject, injectable } from "inversify";
-import { hashPassword } from "../../../../core/func/bcrypt";
 import { userIdentifier } from "../../di/userIdentifiers";
 import { CreateUserEntity } from "../../entities/user";
-import { IUserRepository } from "../../repositories/IUserRepository";
-import { IRegisterUseCase } from "./IRegisterUsecase";
+import IUserRepository from "../../repositories/IUserRepository";
+import IRegisterUseCase from "./IRegisterUsecase";
 
 @injectable()
 export default class RegisterUseCase implements IRegisterUseCase {

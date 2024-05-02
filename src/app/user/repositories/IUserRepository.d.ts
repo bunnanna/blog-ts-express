@@ -1,7 +1,7 @@
 import { Prisma } from "@prisma/client";
 import { UserEntity } from "../entities/user";
 
-export interface IUserRepository {
+export default interface IUserRepository {
 	getAll: () => Promise<UserEntity[]>;
 	getById: (id: string) => Promise<UserEntity>;
 	create: (createBody: Prisma.UserCreateInput) => Promise<void>;
