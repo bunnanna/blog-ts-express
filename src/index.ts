@@ -4,10 +4,8 @@ import "express-async-errors";
 import "reflect-metadata";
 import UserController from "./app/user/controllers/UserController";
 import userRouter from "./app/user/controllers/UserRouter";
-import UserRepository from "./app/user/repositories/UserRepository";
-import RegisterUseCase from "./app/user/usecase/RegisterUseCase/RegisterUseCase";
-import prisma from "./core/dbConnection/prisma";
 import ErrorHandlerMiddleware from "./core/middlewares/ErrorHandlerMiddleware";
+import container from "./di";
 configDotenv();
 const app = express();
 const port = process.env.PORT;
@@ -20,12 +18,7 @@ app.use((req, res, next) => {
 });
 app.get("/", (req, res) => res.send("Hello World!"));
 
-app.use(
-	"/users",
-	userRouter(
-		new UserController(new RegisterUseCase(new UserRepository(prisma)))
-	)
-);
+app.use("/users", userRouter(container.resolve(UserController)));
 
 app.use(ErrorHandlerMiddleware.handleUtilsError);
 
