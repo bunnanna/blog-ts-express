@@ -5,15 +5,17 @@
 	"main": "index.js",
 	"scripts": {
 		"test": "jest --watchAll --collectCoverage",
-		"start": "tsc && node ./dist/index.js",
+		"start:build": "tsc -p tsconfig.build.json",
+		"start:run": "node ./dist/index.js",
+		"start": "pnpm start:build && pnpm start:run",
 		"dev": "nodemon ./src/index.ts",
-		"db": "docker compose up -d"
+		"db": "docker compose up -d && docker compose logs -f db"
 	},
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
-		"@prisma/client": "5.12.1",
+		"@prisma/client": "5.13.0",
 		"bcrypt": "^5.1.1",
 		"dotenv": "^16.4.5",
 		"express": "^4.19.2",
@@ -33,6 +35,7 @@
 		"prisma": "5.12.1",
 		"supertest": "^7.0.0",
 		"ts-jest": "^29.1.2",
+		"tsconfig-paths": "^4.2.0",
 		"typescript": "^5.4.5"
 	}
 }
