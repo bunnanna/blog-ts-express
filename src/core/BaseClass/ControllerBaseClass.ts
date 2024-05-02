@@ -7,8 +7,4 @@ export default abstract class ControllerBaseClass {
 	constructor() {
 		this.router = Router();
 	}
-
-	apply: CallableFunction = () => {
-		throw new Error("Not Implemented Method");
-	};
 }
