@@ -1,9 +1,15 @@
 import { validationResult } from "express-validator";
+import { inject, injectable } from "inversify";
+import { userIdentifier } from "../di/userIdentifiers";
 import { IRegisterUseCase } from "../usecase/RegisterUseCase/IRegisterUsecase";
 import { IUserController } from "./IUserController";
 
+@injectable()
 export default class UserController implements IUserController {
-	constructor(private registerUseCase: IRegisterUseCase) {
+	constructor(
+		@inject(userIdentifier.IRegisterUseCase)
+		private registerUseCase: IRegisterUseCase
+	) {
 		console.log(`User Controller Created`);
 	}
 
