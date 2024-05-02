@@ -1,10 +1,11 @@
 import { PrismaClient } from "@prisma/client";
-import prisma from "../../../configs/db";
+import { IUserRepository } from "./IUserRepository";
 import { userSelect } from "./query";
-import { IUserRepository } from "./userRepo.type";
 
-export class UserRepository implements IUserRepository {
-	constructor(private prisma: PrismaClient) {}
+export default class UserRepository implements IUserRepository {
+	constructor(private prisma: PrismaClient) {
+		console.log("User Repositoy created.");
+	}
 
 	getAll: IUserRepository["getAll"] = async () => {
 		return this.prisma.user.findMany({ select: userSelect });
@@ -17,7 +18,7 @@ export class UserRepository implements IUserRepository {
 		});
 	};
 	create: IUserRepository["create"] = async (data) => {
-		this.prisma.user.create({
+		await this.prisma.user.create({
 			data,
 		});
 	};
@@ -28,6 +29,3 @@ export class UserRepository implements IUserRepository {
 		});
 	};
 }
-
-const userRepository = new UserRepository(prisma);
-export default userRepository;

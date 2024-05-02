@@ -1,25 +1,17 @@
-import { Request, Response, Router } from "express";
 import { validationResult } from "express-validator";
-import { MessageResponse, NoParam } from "../../../utils/type";
-import { registerValidator } from "../middlewares/validator";
-import { CreateUserEntity } from "../usecase/UserEntity";
-import { register } from "../usecase/UserUseCase";
+import { IRegisterUseCase } from "../usecase/RegisterUseCase/IRegisterUsecase";
+import { IUserController } from "./IUserController";
 
-const userRouter = Router();
-
-userRouter.post(
-	"/",
-	registerValidator,
-	async (
-		req: Request<NoParam, MessageResponse, CreateUserEntity>,
-		res: Response
-	) => {
-		if (validationResult(req))
-			return res.status(400).json(validationResult(req));
-		const registerBody = req.body;
-		await register(registerBody);
-		res.status(201).json({ message: "user created" });
+export default class UserController implements IUserController {
+	constructor(private registerUseCase: IRegisterUseCase) {
+		console.log(`User Controller Created`);
 	}
-);
 
-export default userRouter;
+	register: IUserController["register"] = async (req, res) => {
+		const validationErrors = validationResult(req);
+		if (!validationErrors.isEmpty()) throw validationErrors;
+		const registerBody = req.body;
+		await this.registerUseCase.execute(registerBody);
+		res.status(201).json({ message: "user created" });
+	};
+}

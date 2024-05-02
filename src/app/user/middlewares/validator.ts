@@ -1,5 +1,5 @@
 import { checkSchema } from "express-validator";
-import { CreateUserEntity } from "../usecase/UserEntity";
+import { CreateUserEntity } from "../entities/user";
 
 export const registerValidator = checkSchema<keyof CreateUserEntity>({
 	username: { isEmpty: false, isString: true },
@@ -12,6 +12,7 @@ export const registerValidator = checkSchema<keyof CreateUserEntity>({
 				minLowercase: 1,
 				minUppercase: 1,
 				minNumbers: 1,
+				minSymbols: 0,
 			},
 		},
 	},
