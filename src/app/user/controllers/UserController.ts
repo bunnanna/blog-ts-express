@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { ControllerBaseClass } from "@src/core/BaseClass/ControllerBaseClass";
 import { validationResult } from "express-validator";
 import { inject, injectable } from "inversify";
 import { userIdentifier } from "../di/userIdentifiers";
@@ -7,17 +7,20 @@ import { IRegisterUseCase } from "../usecase/RegisterUseCase/IRegisterUsecase";
 import { IUserController } from "./IUserController";
 
 @injectable()
-export default class UserController implements IUserController {
-	public router: Router;
+export default class UserController
+	extends ControllerBaseClass
+	implements IUserController
+{
 	constructor(
 		@inject(userIdentifier.IRegisterUseCase)
 		private registerUseCase: IRegisterUseCase
 	) {
-		this.router = Router();
+		super();
 		this.apply();
 		console.log(`User Controller Created`);
 	}
-	apply: () => void = () => {
+
+	apply: CallableFunction = () => {
 		this.router.post("/", registerValidator, this.register);
 	};
 
