@@ -1,6 +1,7 @@
 import { configDotenv } from "dotenv";
 import express from "express";
 import "express-async-errors";
+import "reflect-metadata";
 import UserController from "./app/user/controllers/UserController";
 import userRouter from "./app/user/controllers/UserRouter";
 import UserRepository from "./app/user/repositories/UserRepository";
