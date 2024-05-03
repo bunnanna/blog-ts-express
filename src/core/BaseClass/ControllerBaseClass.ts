@@ -3,9 +3,9 @@ import { injectable } from 'inversify';
 
 @injectable()
 export default abstract class ControllerBaseClass {
-  router: Router;
+	router: Router;
 
-  constructor() {
-    this.router = Router();
-  }
+	constructor() {
+		this.router = Router();
+	}
 }

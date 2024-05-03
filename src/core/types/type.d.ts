@@ -4,5 +4,5 @@ export interface NoParam {}
 
 export type ValidateRequestError = Result<ValidationError>;
 export interface MessageResponse {
-  message: string;
+	message: string;
 }
