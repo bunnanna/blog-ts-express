@@ -3,5 +3,5 @@ import { RequestHandler } from 'express';
 import { CreateUserEntity } from '../entities/user';
 
 export default interface IUserController {
-  register: RequestHandler<NoParam, MessageResponse, CreateUserEntity>;
+	register: RequestHandler<NoParam, MessageResponse, CreateUserEntity>;
 }
