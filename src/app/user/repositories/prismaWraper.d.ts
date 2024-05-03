@@ -1,7 +1,10 @@
-import { Prisma, User } from '@prisma/client';
+import { Prisma } from '@prisma/client';
+import { DefaultArgs } from '@prisma/client/runtime/library';
 
+interface PrismaUser extends Prisma.UserDelegate<DefaultArgs> {}
 export interface IPrismaWrapper {
 	user: {
-		create: (args: Prisma.UserCreateArgs) => Promise<User>;
+		create: PrismaUser['create'];
+		findUniqueOrThrow: PrismaUser['findFirstOrThrow'];
 	};
 }

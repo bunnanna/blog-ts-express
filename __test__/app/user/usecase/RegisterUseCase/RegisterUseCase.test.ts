@@ -9,9 +9,9 @@ class MockUserRepository implements IUserRepository {
 	// 	throw new Error('Not Implemented Method');
 	// };
 
-	// getById: IUserRepository['getById'] = () => {
-	// 	throw new Error('Not Implemented Method');
-	// };
+	getById: IUserRepository['getById'] = () => {
+		throw new Error('Not Implemented Method');
+	};
 
 	create: IUserRepository['create'] = () => {
 		throw new Error('Not Implemented Method');

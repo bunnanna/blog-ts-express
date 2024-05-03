@@ -9,6 +9,9 @@ const MockPrisma: IPrismaWrapper = {
 		create: () => {
 			throw new Error('Not Implemented Method');
 		},
+		findUniqueOrThrow: () => {
+			throw new Error('Not Implemented Method');
+		},
 	},
 };
 
@@ -27,15 +30,7 @@ describe('UserRepository', () => {
 				email: 'string@string.com',
 				password: 'String123',
 			};
-			jest.spyOn(mockPrisma.user, 'create').mockImplementation(({ data }) =>
-				Promise.resolve({
-					...data,
-					role: 'User',
-					userId: '1',
-					createdAt: new Date(),
-					updatedAt: new Date(),
-				})
-			);
+			jest.spyOn(mockPrisma.user, 'create').mockImplementation();
 			const OutputData = await userRepository.create(InputData);
 			expect(OutputData).toBeUndefined();
 		});
