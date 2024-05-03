@@ -2,6 +2,7 @@ import app from "@src/app";
 import UserController from "@src/app/user/controllers/UserController";
 import { CreateUserEntity } from "@src/app/user/entities/user";
 import IRegisterUseCase from "@src/app/user/usecase/RegisterUseCase/IRegisterUsecase";
+import ErrorHandlerMiddleware from "@src/core/middlewares/ErrorHandlerMiddleware";
 import supertest from "supertest";
 
 class MockRegisterUseCase implements IRegisterUseCase {
@@ -15,6 +16,7 @@ describe("UserController", () => {
 		mockRegisterUseCase = new MockRegisterUseCase();
 		const controller = new UserController(mockRegisterUseCase);
 		app.use("/users", controller.router);
+		app.use(ErrorHandlerMiddleware.handleUtilsError);
 	});
 
 	beforeEach(() => {
@@ -31,14 +33,14 @@ describe("UserController", () => {
 			jest
 				.spyOn(mockRegisterUseCase, "execute")
 				.mockImplementationOnce(() => Promise.resolve());
-			supertest(app)
+			await supertest(app)
 				.post("/users")
 				.send(InputData)
 				.expect(201)
-				.expect("message", "user created");
+				.expect({ message: "user created" });
 		});
 
-		test("should return 500", () => {
+		test("should return 500", async () => {
 			const InputData = {
 				username: "",
 				email: "notemail",
@@ -47,7 +49,7 @@ describe("UserController", () => {
 			jest
 				.spyOn(mockRegisterUseCase, "execute")
 				.mockImplementationOnce(() => Promise.resolve());
-			supertest(app).post("/users").send(InputData).expect(500);
+			await supertest(app).post("/users").send(InputData).expect(500);
 		});
 	});
 });
