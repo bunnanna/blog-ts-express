@@ -5,21 +5,21 @@ import IRegisterUseCase from '@src/app/user/usecase/RegisterUseCase/IRegisterUse
 import RegisterUseCase from '@src/app/user/usecase/RegisterUseCase/RegisterUseCase';
 
 class MockUserRepository implements IUserRepository {
-	getAll: IUserRepository['getAll'] = () => {
-		throw new Error('Not Implemented Method');
-	};
+	// getAll: IUserRepository['getAll'] = () => {
+	// 	throw new Error('Not Implemented Method');
+	// };
 
-	getById: IUserRepository['getById'] = () => {
-		throw new Error('Not Implemented Method');
-	};
+	// getById: IUserRepository['getById'] = () => {
+	// 	throw new Error('Not Implemented Method');
+	// };
 
 	create: IUserRepository['create'] = () => {
 		throw new Error('Not Implemented Method');
 	};
 
-	update: IUserRepository['update'] = () => {
-		throw new Error('Not Implemented Method');
-	};
+	// update: IUserRepository['update'] = () => {
+	// 	throw new Error('Not Implemented Method');
+	// };
 }
 
 describe('RegisterUseCase', () => {
