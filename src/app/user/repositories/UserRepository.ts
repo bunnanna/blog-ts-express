@@ -1,12 +1,12 @@
+import { PrismaClient } from '@prisma/client';
 import { inject, injectable } from 'inversify';
 import { dbIdentifier } from '../../../core/dbConnection/prisma';
 import IUserRepository from './IUserRepository';
-import { IPrismaWrapper } from './prismaWraper';
 import { userSelect } from './query';
 
 @injectable()
 export default class UserRepository implements IUserRepository {
-	constructor(@inject(dbIdentifier.PrismaClient) private prisma: IPrismaWrapper) {
+	constructor(@inject(dbIdentifier.PrismaClient) private prisma: PrismaClient) {
 		console.log('User Repositoy created.');
 	}
 

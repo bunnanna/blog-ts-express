@@ -1,25 +1,15 @@
 import 'reflect-metadata';
 
+import { PrismaClient } from '@prisma/client';
 import IUserRepository from '@src/app/user/repositories/IUserRepository';
 import UserRepository from '@src/app/user/repositories/UserRepository';
-import { IPrismaWrapper } from '@src/app/user/repositories/prismaWraper';
-
-const MockPrisma: IPrismaWrapper = {
-	user: {
-		create: () => {
-			throw new Error('Not Implemented Method');
-		},
-		findUniqueOrThrow: () => {
-			throw new Error('Not Implemented Method');
-		},
-	},
-};
+import { DeepMockProxy, mockDeep } from 'jest-mock-extended';
 
 describe('UserRepository', () => {
-	let mockPrisma: IPrismaWrapper;
+	let mockPrisma: DeepMockProxy<PrismaClient>;
 	let userRepository: IUserRepository;
 	beforeAll(() => {
-		mockPrisma = MockPrisma;
+		mockPrisma = mockDeep<PrismaClient>();
 		userRepository = new UserRepository(mockPrisma);
 	});
 
@@ -30,7 +20,13 @@ describe('UserRepository', () => {
 				email: 'string@string.com',
 				password: 'String123',
 			};
-			jest.spyOn(mockPrisma.user, 'create').mockImplementation();
+			jest.spyOn(mockPrisma.user, 'create').mockResolvedValue({
+				...InputData,
+				updatedAt: new Date(),
+				createdAt: new Date(),
+				userId: '1',
+				role: 'User',
+			});
 			const OutputData = await userRepository.create(InputData);
 			expect(OutputData).toBeUndefined();
 		});
