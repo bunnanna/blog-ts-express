@@ -2,17 +2,13 @@ import app from '@src/app';
 import UserController from '@src/app/user/controllers/UserController';
 import IRegisterUseCase from '@src/app/user/usecase/RegisterUseCase/IRegisterUsecase';
 import ErrorHandlerMiddleware from '@src/core/middlewares/ErrorHandlerMiddleware';
+import { mockDeep } from 'jest-mock-extended';
 import supertest from 'supertest';
 
-class MockRegisterUseCase implements IRegisterUseCase {
-	execute: IRegisterUseCase['execute'] = () => {
-		throw new Error('Not Implemented Method');
-	};
-}
 describe('UserController', () => {
-	let mockRegisterUseCase: MockRegisterUseCase;
+	let mockRegisterUseCase: IRegisterUseCase;
 	beforeAll(() => {
-		mockRegisterUseCase = new MockRegisterUseCase();
+		mockRegisterUseCase = mockDeep<IRegisterUseCase>();
 		const controller = new UserController(mockRegisterUseCase);
 		app.use('/users', controller.router);
 		app.use(ErrorHandlerMiddleware.handleUtilsError);
