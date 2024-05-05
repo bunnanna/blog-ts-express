@@ -4,7 +4,8 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"test": "jest --watchAll --collectCoverage",
+		"test": "jest --watchAll --verbose --silent",
+		"test:coverage": "jest --watchAll --collectCoverage --silent",
 		"start:build": "tsc -p tsconfig.build.json",
 		"start:run": "node ./dist/index.js",
 		"start": "pnpm start:build && pnpm start:run",
