@@ -23,7 +23,7 @@ export default class UserController extends ControllerBaseClass implements IUser
 
   register: IUserController['register'] = async (req, res) => {
     const validationErrors = validationResult(req);
-    if (!validationErrors.isEmpty()) throw validationErrors;
+		if (!validationErrors.isEmpty()) throw new ValidationBadRequestError(validationErrors);
     const registerBody = req.body;
     await this.registerUseCase.execute(registerBody);
     res.status(201).json({ message: 'user created' });
