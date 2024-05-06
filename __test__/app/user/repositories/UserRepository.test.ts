@@ -1,6 +1,7 @@
 import 'reflect-metadata';
 
 import { PrismaClient, User } from '@prisma/client';
+import { UserEntity } from '@src/app/user/entities/user';
 import IUserRepository from '@src/app/user/repositories/IUserRepository';
 import UserRepository from '@src/app/user/repositories/UserRepository';
 import { DeepMockProxy, mockDeep, mockReset } from 'jest-mock-extended';
@@ -40,16 +41,15 @@ describe('UserRepository', () => {
 	describe('getById', () => {
 		test('should get User Data', async () => {
 			const userId = '16478cbe-9741-4c96-9a0c-177c7635da74';
-			const userData: User = {
+			const userData: UserEntity = {
 				username: 'string',
 				email: 'string@string.com',
-				password: '',
 				updatedAt: new Date('2024-05-02T03:10:41.027Z'),
 				createdAt: new Date('2024-05-02T03:10:41.027Z'),
 				userId: '16478cbe-9741-4c96-9a0c-177c7635da74',
 				role: 'User',
 			};
-			jest.spyOn(mockPrisma.user, 'findUniqueOrThrow').mockResolvedValue(userData);
+			jest.spyOn(mockPrisma.user, 'findUniqueOrThrow').mockResolvedValue(userData as User);
 
 			const result = await userRepository.getById(userId);
 			expect(result).not.toBeUndefined();
