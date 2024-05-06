@@ -1,19 +1,19 @@
 import app from '@src/app';
 import UserController from '@src/app/user/controllers/UserController';
+import { UserEntity } from '@src/app/user/entities/user';
+import { IGetUserUseCase } from '@src/app/user/usecase/GetUserUseCase/IGetUserUseCase';
 import IRegisterUseCase from '@src/app/user/usecase/RegisterUseCase/IRegisterUsecase';
 import ErrorHandlerMiddleware from '@src/core/middlewares/ErrorHandlerMiddleware';
+import { mockDeep } from 'jest-mock-extended';
 import supertest from 'supertest';
 
-class MockRegisterUseCase implements IRegisterUseCase {
-	execute: IRegisterUseCase['execute'] = () => {
-		throw new Error('Not Implemented Method');
-	};
-}
 describe('UserController', () => {
-	let mockRegisterUseCase: MockRegisterUseCase;
+	let mockRegisterUseCase: IRegisterUseCase;
+	let mockGetUserUseCase: IGetUserUseCase;
 	beforeAll(() => {
-		mockRegisterUseCase = new MockRegisterUseCase();
-		const controller = new UserController(mockRegisterUseCase);
+		mockRegisterUseCase = mockDeep<IRegisterUseCase>();
+		mockGetUserUseCase = mockDeep<IGetUserUseCase>();
+		const controller = new UserController(mockRegisterUseCase, mockGetUserUseCase);
 		app.use('/users', controller.router);
 		app.use(ErrorHandlerMiddleware.handleUtilsError);
 	});
@@ -27,7 +27,7 @@ describe('UserController', () => {
 			const InputData = {
 				username: 'string',
 				email: 'string@string.com',
-				password: 'String123',
+				password: 'String123'
 			};
 			jest.spyOn(mockRegisterUseCase, 'execute').mockImplementationOnce(() => Promise.resolve());
 			await supertest(app).post('/users').send(InputData).expect(201).expect({ message: 'user created' });
@@ -37,10 +37,26 @@ describe('UserController', () => {
 			const InputData = {
 				username: '',
 				email: 'notemail',
-				password: 'badpassword',
+				password: 'badpassword'
 			};
 			jest.spyOn(mockRegisterUseCase, 'execute').mockImplementationOnce(() => Promise.resolve());
 			await supertest(app).post('/users').send(InputData).expect(500);
+		});
+	});
+
+	describe('getById', () => {
+		test('should return 200', async () => {
+			const userId = '16478cbe-9741-4c96-9a0c-177c7635da74';
+			const userData: UserEntity = {
+				username: 'string',
+				email: 'string@string.com',
+				updatedAt: new Date('2024-05-02T03:10:41.027Z'),
+				createdAt: new Date('2024-05-02T03:10:41.027Z'),
+				userId: '16478cbe-9741-4c96-9a0c-177c7635da74',
+				role: 'User'
+			};
+			jest.spyOn(mockGetUserUseCase, 'execute').mockResolvedValue(userData);
+			await supertest(app).post(`/users/${userId}`).expect(200).expect(userData);
 		});
 	});
 });

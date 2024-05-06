@@ -5,20 +5,9 @@
 		"jest": true
 	},
 	"root": true,
-	"extends": [
-		"airbnb-base",
-		"airbnb-typescript/base",
-		"prettier"
-	],
-	"plugins": [
-		"prettier",
-		"import"
-	],
-	"ignorePatterns": [
-		"dist/*",
-		".eslintrc",
-		"*.mjs"
-	],
+	"extends": ["airbnb-base", "airbnb-typescript/base", "prettier"],
+	"plugins": ["prettier", "import"],
+	"ignorePatterns": ["dist/*", ".eslintrc", "*.mjs"],
 	"globals": {
 		"Atomics": "readonly",
 		"SharedArrayBuffer": "readonly"
@@ -31,7 +20,7 @@
 	},
 	"rules": {
 		"prettier/prettier": [
-			"error",
+			"warn",
 			{
 				"endOfLine": "auto",
 				"useTabs": true
@@ -41,6 +30,7 @@
 		"no-param-reassign": "off",
 		"no-console": "off",
 		"camelcase": "off",
+		"max-classes-per-file": "off",
 		"no-unused-vars": [
 			"error",
 			{
@@ -63,10 +53,7 @@
 	},
 	"settings": {
 		"import/parsers": {
-			"@typescript-eslint/parser": [
-				".ts",
-				".tsx"
-			]
+			"@typescript-eslint/parser": [".ts", ".tsx"]
 		},
 		"import/resolver": {
 			"typescript": {
