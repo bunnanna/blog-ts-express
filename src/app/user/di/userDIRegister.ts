@@ -10,8 +10,8 @@ import RegisterUseCase from '../usecase/RegisterUseCase/RegisterUseCase';
 import { userIdentifier } from './userIdentifiers';
 
 export const configUserDI = (container: Container) => {
-	container.bind<IUserRepository>(userIdentifier.IUserRepository).to(UserRepository);
-	container.bind<IRegisterUseCase>(userIdentifier.IRegisterUseCase).to(RegisterUseCase);
-	container.bind<IGetUserUseCase>(userIdentifier.IGetUserUseCase).to(GetUserUseCase);
-	container.bind<IUserController>(userIdentifier.IUserController).to(UserController);
+	container.bind<IUserRepository>(userIdentifier.IUserRepository).to(UserRepository).inSingletonScope();
+	container.bind<IRegisterUseCase>(userIdentifier.IRegisterUseCase).to(RegisterUseCase).inSingletonScope();
+	container.bind<IGetUserUseCase>(userIdentifier.IGetUserUseCase).to(GetUserUseCase).inSingletonScope();
+	container.bind<IUserController>(userIdentifier.IUserController).to(UserController).inSingletonScope();
 };
