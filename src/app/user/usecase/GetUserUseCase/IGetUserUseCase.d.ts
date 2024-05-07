@@ -1,5 +1,5 @@
-import { UserEntity } from '../../entities/user';
+import { UserEntityWithOutPassword } from '../../entities/user';
 
 export interface IGetUserUseCase {
-  execute: (userId: string) => Promise<UserEntity>;
+	execute: (userId: string) => Promise<UserEntityWithOutPassword>;
 }

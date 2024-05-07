@@ -7,7 +7,5 @@ import { IGetUserUseCase } from './IGetUserUseCase';
 export default class GetUserUseCase implements IGetUserUseCase {
 	constructor(@inject(userIdentifier.IUserRepository) private userRepository: IUserRepository) {}
 
-	execute: IGetUserUseCase['execute'] = (userId: string) => {
-		throw new Error('Not Implemented Method');
-	};
+	execute: IGetUserUseCase['execute'] = async (userId: string) => this.userRepository.getById(userId);
 }
