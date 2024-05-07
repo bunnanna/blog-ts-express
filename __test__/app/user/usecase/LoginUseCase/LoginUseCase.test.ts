@@ -3,15 +3,18 @@ import IUserRepository from '@src/app/user/repositories/IUserRepository';
 import { ILoginUseCase } from '@src/app/user/usecase/LoginUseCase/ILoginUsecase';
 import LoginUseCase from '@src/app/user/usecase/LoginUseCase/LoginUseCase';
 import { BadRequestError } from '@src/core/class/Error';
+import { IJWTService } from '@src/core/class/JWTService/IJWTService';
 import { mockDeep } from 'jest-mock-extended';
 
 describe('LoginUseCase', () => {
 	let mockUserRepository: IUserRepository;
+	let mockJwtService: IJWTService;
 	let loginUseCase: ILoginUseCase;
 
 	beforeAll(() => {
 		mockUserRepository = mockDeep<IUserRepository>();
-		loginUseCase = new LoginUseCase(mockUserRepository);
+		mockJwtService = mockDeep<IJWTService>();
+		loginUseCase = new LoginUseCase(mockUserRepository, mockJwtService);
 	});
 
 	beforeEach(() => {

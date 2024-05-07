@@ -1,7 +1,9 @@
+import { injectable } from 'inversify';
 import { JwtPayload, sign, verify } from 'jsonwebtoken';
 import { IJWTService } from './IJWTService';
 
-export default class JWTRefreshService implements IJWTService {
+@injectable()
+export default class JWTAccessService implements IJWTService {
 	constructor(private secret: string) {
 		if (!secret) throw new Error('jwt secret is undefined.');
 	}
