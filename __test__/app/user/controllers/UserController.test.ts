@@ -1,7 +1,8 @@
 import app from '@src/app';
 import UserController from '@src/app/user/controllers/UserController';
-import { UserEntityWithOutPassword } from '@src/app/user/entities/user';
+import { LoginEntity, UserEntityWithOutPassword } from '@src/app/user/entities/user';
 import { IGetUserUseCase } from '@src/app/user/usecase/GetUserUseCase/IGetUserUseCase';
+import { ILoginUseCase } from '@src/app/user/usecase/LoginUseCase/ILoginUsecase';
 import IRegisterUseCase from '@src/app/user/usecase/RegisterUseCase/IRegisterUsecase';
 import ErrorHandlerMiddleware from '@src/core/middlewares/ErrorHandlerMiddleware';
 import { mockDeep } from 'jest-mock-extended';
@@ -10,10 +11,12 @@ import supertest from 'supertest';
 describe('UserController', () => {
 	let mockRegisterUseCase: IRegisterUseCase;
 	let mockGetUserUseCase: IGetUserUseCase;
+	let mockLoginUseCase: ILoginUseCase;
 	beforeAll(() => {
 		mockRegisterUseCase = mockDeep<IRegisterUseCase>();
 		mockGetUserUseCase = mockDeep<IGetUserUseCase>();
-		const controller = new UserController(mockRegisterUseCase, mockGetUserUseCase);
+		mockLoginUseCase = mockDeep<ILoginUseCase>();
+		const controller = new UserController(mockRegisterUseCase, mockGetUserUseCase, mockLoginUseCase);
 		app.use('/users', controller.router);
 		app.use(ErrorHandlerMiddleware.handleUtilsError);
 	});
@@ -57,6 +60,19 @@ describe('UserController', () => {
 			};
 			jest.spyOn(mockGetUserUseCase, 'execute').mockResolvedValue(userData);
 			await supertest(app).get(`/users/${userId}`).expect(200).expect(JSON.stringify(userData));
+		});
+	});
+
+	describe('login', () => {
+		test('should return 200', async () => {
+			const loginBody: LoginEntity = {
+				email: 'string@string.com',
+				password: 'String123'
+			};
+			const token: string = 'token';
+			jest.spyOn(mockLoginUseCase, 'execute').mockResolvedValue(token);
+			const res = await supertest(app).post('/users/login').send(loginBody).expect(200);
+			expect(res.headers['set-cookie']).toBe(token);
 		});
 	});
 });

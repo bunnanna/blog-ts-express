@@ -5,20 +5,25 @@ import { inject, injectable } from 'inversify';
 import { userIdentifier } from '../di/userIdentifiers';
 import { registerValidator } from '../middlewares/validator';
 import { IGetUserUseCase } from '../usecase/GetUserUseCase/IGetUserUseCase';
+import { ILoginUseCase } from '../usecase/LoginUseCase/ILoginUsecase';
 import IRegisterUseCase from '../usecase/RegisterUseCase/IRegisterUsecase';
 import IUserController from './IUserController';
 
 @injectable()
 export default class UserController extends ControllerBaseClass implements IUserController {
 	constructor(
-		@inject(userIdentifier.IRegisterUseCase)
-		private registerUseCase: IRegisterUseCase,
-		@inject(userIdentifier.IGetUserUseCase) private getUserUseCase: IGetUserUseCase
+		@inject(userIdentifier.IRegisterUseCase) private registerUseCase: IRegisterUseCase,
+		@inject(userIdentifier.IGetUserUseCase) private getUserUseCase: IGetUserUseCase,
+		@inject(userIdentifier.ILoginUseCase) private loginUseCase: ILoginUseCase
 	) {
 		super();
 		this.apply();
 		console.log(`User Controller Created`);
 	}
+
+	login: IUserController['login'] = async () => {
+		throw new Error('Not Implemented Method');
+	};
 
 	apply: CallableFunction = () => {
 		this.router.post('/', registerValidator, this.register);
