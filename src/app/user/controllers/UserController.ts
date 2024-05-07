@@ -1,5 +1,5 @@
 import ControllerBaseClass from '@src/core/class/ControllerBaseClass';
-import { BadRequestError, ValidationBadRequestError } from '@src/core/class/Error';
+import { ValidationBadRequestError } from '@src/core/class/Error';
 import { validationResult } from 'express-validator';
 import { inject, injectable } from 'inversify';
 import { userIdentifier } from '../di/userIdentifiers';
@@ -21,18 +21,23 @@ export default class UserController extends ControllerBaseClass implements IUser
 		console.log(`User Controller Created`);
 	}
 
-	login: IUserController['login'] = async () => {
-		throw new Error('Not Implemented Method');
+	login: IUserController['login'] = async (req, res) => {
+		const loginBody = req.body;
+		const token = await this.loginUseCase.execute(loginBody);
+		res
+			.status(200)
+			.cookie('refreshToken', token, { httpOnly: true, expires: new Date(Date.now() + 1 * 7 * 24 * 60 * 60 * 1000) })
+			.send('login complete');
 	};
 
 	apply: CallableFunction = () => {
 		this.router.post('/', registerValidator, this.register);
 		this.router.get('/:userId', this.getUser);
+		this.router.post('/login', this.login);
 	};
 
 	getUser: IUserController['getUser'] = async (req, res) => {
 		const { userId } = req.params;
-		if (!userId) throw new BadRequestError('BadRequest');
 		const user = await this.getUserUseCase.execute(userId);
 		res.status(200).json(user).end();
 	};
