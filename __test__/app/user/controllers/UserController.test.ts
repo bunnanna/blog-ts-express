@@ -56,7 +56,7 @@ describe('UserController', () => {
 				role: 'User'
 			};
 			jest.spyOn(mockGetUserUseCase, 'execute').mockResolvedValue(userData);
-			await supertest(app).post(`/users/${userId}`).expect(200).expect(userData);
+			await supertest(app).get(`/users/${userId}`).expect(200).expect(JSON.stringify(userData));
 		});
 	});
 });
