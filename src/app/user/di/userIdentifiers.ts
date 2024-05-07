@@ -4,5 +4,3 @@ export const userIdentifier = {
 	IUserController: Symbol.for('IUserController'),
 	IGetUserUseCase: Symbol.for('IGetUserUseCase')
 };
-
-export default {};

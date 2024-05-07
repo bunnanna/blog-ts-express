@@ -1,7 +1,5 @@
 import { Result, ValidationError } from 'express-validator';
 
-export default {};
-
 export class HttpStatusError extends Error {}
 
 export class BadRequestError extends HttpStatusError {
