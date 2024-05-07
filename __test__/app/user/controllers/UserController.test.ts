@@ -1,6 +1,6 @@
 import app from '@src/app';
 import UserController from '@src/app/user/controllers/UserController';
-import { UserEntity } from '@src/app/user/entities/user';
+import { UserEntityWithOutPassword } from '@src/app/user/entities/user';
 import { IGetUserUseCase } from '@src/app/user/usecase/GetUserUseCase/IGetUserUseCase';
 import IRegisterUseCase from '@src/app/user/usecase/RegisterUseCase/IRegisterUsecase';
 import ErrorHandlerMiddleware from '@src/core/middlewares/ErrorHandlerMiddleware';
@@ -47,7 +47,7 @@ describe('UserController', () => {
 	describe('getById', () => {
 		test('should return 200', async () => {
 			const userId = '16478cbe-9741-4c96-9a0c-177c7635da74';
-			const userData: UserEntity = {
+			const userData: UserEntityWithOutPassword = {
 				username: 'string',
 				email: 'string@string.com',
 				updatedAt: new Date('2024-05-02T03:10:41.027Z'),
