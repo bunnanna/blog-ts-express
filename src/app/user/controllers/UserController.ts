@@ -1,33 +1,43 @@
-import ControllerBaseClass from '@src/core/BaseClass/ControllerBaseClass';
-import { BadRequestError, ValidationBadRequestError } from '@src/core/BaseClass/Error';
+import ControllerBaseClass from '@src/core/class/ControllerBaseClass';
+import { ValidationBadRequestError } from '@src/core/class/Error';
 import { validationResult } from 'express-validator';
 import { inject, injectable } from 'inversify';
 import { userIdentifier } from '../di/userIdentifiers';
 import { registerValidator } from '../middlewares/validator';
 import { IGetUserUseCase } from '../usecase/GetUserUseCase/IGetUserUseCase';
+import { ILoginUseCase } from '../usecase/LoginUseCase/ILoginUsecase';
 import IRegisterUseCase from '../usecase/RegisterUseCase/IRegisterUsecase';
 import IUserController from './IUserController';
 
 @injectable()
 export default class UserController extends ControllerBaseClass implements IUserController {
 	constructor(
-		@inject(userIdentifier.IRegisterUseCase)
-		private registerUseCase: IRegisterUseCase,
-		@inject(userIdentifier.IGetUserUseCase) private getUserUseCase: IGetUserUseCase
+		@inject(userIdentifier.IRegisterUseCase) private registerUseCase: IRegisterUseCase,
+		@inject(userIdentifier.IGetUserUseCase) private getUserUseCase: IGetUserUseCase,
+		@inject(userIdentifier.ILoginUseCase) private loginUseCase: ILoginUseCase
 	) {
 		super();
 		this.apply();
 		console.log(`User Controller Created`);
 	}
 
+	login: IUserController['login'] = async (req, res) => {
+		const loginBody = req.body;
+		const token = await this.loginUseCase.execute(loginBody);
+		res
+			.status(200)
+			.cookie('refreshToken', token, { httpOnly: true, expires: new Date(Date.now() + 1 * 7 * 24 * 60 * 60 * 1000) })
+			.send('login complete');
+	};
+
 	apply: CallableFunction = () => {
 		this.router.post('/', registerValidator, this.register);
 		this.router.get('/:userId', this.getUser);
+		this.router.post('/login', this.login);
 	};
 
 	getUser: IUserController['getUser'] = async (req, res) => {
 		const { userId } = req.params;
-		if (!userId) throw new BadRequestError('BadRequest');
 		const user = await this.getUserUseCase.execute(userId);
 		res.status(200).json(user).end();
 	};
