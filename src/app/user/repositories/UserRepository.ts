@@ -10,9 +10,7 @@ export default class UserRepository implements IUserRepository {
 		console.log('User Repositoy created.');
 	}
 
-	getByEmail: IUserRepository['getByEmail'] = async () => {
-		throw new Error('Not Implemented Method');
-	};
+	getByEmail: IUserRepository['getByEmail'] = async (email) => this.prisma.user.findUniqueOrThrow({ where: { email } });
 
 	// getAll: IUserRepository['getAll'] = async () => this.prisma.user.findMany({ select: userSelect });
 
