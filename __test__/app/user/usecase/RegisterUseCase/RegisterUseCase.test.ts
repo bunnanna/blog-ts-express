@@ -3,31 +3,14 @@ import 'reflect-metadata';
 import IUserRepository from '@src/app/user/repositories/IUserRepository';
 import IRegisterUseCase from '@src/app/user/usecase/RegisterUseCase/IRegisterUsecase';
 import RegisterUseCase from '@src/app/user/usecase/RegisterUseCase/RegisterUseCase';
-
-class MockUserRepository implements IUserRepository {
-	// getAll: IUserRepository['getAll'] = () => {
-	// 	throw new Error('Not Implemented Method');
-	// };
-
-	// getById: IUserRepository['getById'] = () => {
-	// 	throw new Error('Not Implemented Method');
-	// };
-
-	create: IUserRepository['create'] = () => {
-		throw new Error('Not Implemented Method');
-	};
-
-	// update: IUserRepository['update'] = () => {
-	// 	throw new Error('Not Implemented Method');
-	// };
-}
+import { mockDeep } from 'jest-mock-extended';
 
 describe('RegisterUseCase', () => {
-	let mockUserRepository: MockUserRepository;
+	let mockUserRepository: IUserRepository;
 	let registerUseCase: IRegisterUseCase;
 
 	beforeAll(() => {
-		mockUserRepository = new MockUserRepository();
+		mockUserRepository = mockDeep<IUserRepository>();
 		registerUseCase = new RegisterUseCase(mockUserRepository);
 	});
 	beforeEach(() => {
