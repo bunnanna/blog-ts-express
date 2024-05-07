@@ -75,12 +75,12 @@ describe('UserRepository', () => {
 				userId: '16478cbe-9741-4c96-9a0c-177c7635da74',
 				role: 'User'
 			};
-			jest.spyOn(mockPrisma.user, 'findFirstOrThrow').mockResolvedValue(userData);
+			jest.spyOn(mockPrisma.user, 'findUniqueOrThrow').mockResolvedValue(userData);
 			expect(userRepository.getByEmail(email)).resolves.toBe(userData);
 		});
 		test('should throw when not found', () => {
 			const email = 'string@string.com';
-			jest.spyOn(mockPrisma.user, 'findFirstOrThrow').mockRejectedValue(new Error());
+			jest.spyOn(mockPrisma.user, 'findUniqueOrThrow').mockRejectedValue(new Error());
 			expect(userRepository.getByEmail(email)).rejects.toThrow(Error);
 		});
 	});

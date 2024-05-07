@@ -1,18 +1,16 @@
 import { PrismaClient } from '@prisma/client';
+import { coreIdentifier } from '@src/core/di/coreIdentifier';
 import { inject, injectable } from 'inversify';
-import { dbIdentifier } from '../../../core/dbConnection/prisma';
 import IUserRepository from './IUserRepository';
 import { userSelect } from './query';
 
 @injectable()
 export default class UserRepository implements IUserRepository {
-	constructor(@inject(dbIdentifier.PrismaClient) private prisma: PrismaClient) {
+	constructor(@inject(coreIdentifier.PrismaClient) private prisma: PrismaClient) {
 		console.log('User Repositoy created.');
 	}
 
-	getByEmail: IUserRepository['getByEmail'] = async () => {
-		throw new Error('Not Implemented Method');
-	};
+	getByEmail: IUserRepository['getByEmail'] = async (email) => this.prisma.user.findUniqueOrThrow({ where: { email } });
 
 	// getAll: IUserRepository['getAll'] = async () => this.prisma.user.findMany({ select: userSelect });
 
