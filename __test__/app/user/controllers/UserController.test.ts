@@ -72,7 +72,10 @@ describe('UserController', () => {
 			const token: string = 'token';
 			jest.spyOn(mockLoginUseCase, 'execute').mockResolvedValue(token);
 			const res = await supertest(app).post('/users/login').send(loginBody).expect(200);
-			expect(res.headers['set-cookie']).toBe(token);
+			const cookie = res.headers['set-cookie'].toString();
+			expect(cookie).toMatch(`refreshToken=${token}`);
+			expect(cookie).toMatch('HttpOnly');
+			expect(cookie).toMatch('Expires');
 		});
 	});
 });
