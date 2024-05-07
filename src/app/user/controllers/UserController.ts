@@ -1,5 +1,5 @@
-import ControllerBaseClass from '@src/core/BaseClass/ControllerBaseClass';
-import { BadRequestError, ValidationBadRequestError } from '@src/core/BaseClass/Error';
+import ControllerBaseClass from '@src/core/class/ControllerBaseClass';
+import { BadRequestError, ValidationBadRequestError } from '@src/core/class/Error';
 import { validationResult } from 'express-validator';
 import { inject, injectable } from 'inversify';
 import { userIdentifier } from '../di/userIdentifiers';

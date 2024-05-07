@@ -2,7 +2,7 @@ import { LoginEntity, UserEntity } from '@src/app/user/entities/user';
 import IUserRepository from '@src/app/user/repositories/IUserRepository';
 import { ILoginUseCase } from '@src/app/user/usecase/LoginUseCase/ILoginUsecase';
 import LoginUseCase from '@src/app/user/usecase/LoginUseCase/LoginUseCase';
-import { BadRequestError } from '@src/core/BaseClass/Error';
+import { BadRequestError } from '@src/core/class/Error';
 import { mockDeep } from 'jest-mock-extended';
 
 describe('LoginUseCase', () => {
