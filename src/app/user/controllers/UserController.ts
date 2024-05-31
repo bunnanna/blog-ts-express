@@ -3,6 +3,7 @@ import { ValidationBadRequestError } from '@src/core/class/Error';
 import { validationResult } from 'express-validator';
 import { inject, injectable } from 'inversify';
 import { userIdentifier } from '../di/userIdentifiers';
+import { IJWTVwerifyMiddleware } from '../middlewares/IJWTVerifyMiddleware';
 import { registerValidator } from '../middlewares/validator';
 import { IGetUserUseCase } from '../usecase/GetUserUseCase/IGetUserUseCase';
 import { ILoginUseCase } from '../usecase/LoginUseCase/ILoginUsecase';
@@ -14,12 +15,19 @@ export default class UserController extends ControllerBaseClass implements IUser
 	constructor(
 		@inject(userIdentifier.IRegisterUseCase) private registerUseCase: IRegisterUseCase,
 		@inject(userIdentifier.IGetUserUseCase) private getUserUseCase: IGetUserUseCase,
-		@inject(userIdentifier.ILoginUseCase) private loginUseCase: ILoginUseCase
+		@inject(userIdentifier.ILoginUseCase) private loginUseCase: ILoginUseCase,
+		@inject(userIdentifier.IJWTVwerifyMiddleware) private jwtMiddleware: IJWTVwerifyMiddleware
 	) {
 		super();
 		this.apply();
 		console.log(`User Controller Created`);
 	}
+
+	apply = () => {
+		this.router.post('/', registerValidator, this.register);
+		this.router.get('/user/:userId', this.jwtMiddleware.verifyRefreshToken, this.getUser);
+		this.router.post('/login', this.login);
+	};
 
 	login: IUserController['login'] = async (req, res) => {
 		const loginBody = req.body;
@@ -28,12 +36,6 @@ export default class UserController extends ControllerBaseClass implements IUser
 			.status(200)
 			.cookie('refreshToken', token, { httpOnly: true, expires: new Date(Date.now() + 1 * 7 * 24 * 60 * 60 * 1000) })
 			.send('login complete');
-	};
-
-	apply: CallableFunction = () => {
-		this.router.post('/', registerValidator, this.register);
-		this.router.get('/:userId', this.getUser);
-		this.router.post('/login', this.login);
 	};
 
 	getUser: IUserController['getUser'] = async (req, res) => {
