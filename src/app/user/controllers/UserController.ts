@@ -25,6 +25,7 @@ export default class UserController extends ControllerBaseClass implements IUser
 
 	apply = () => {
 		this.router.post('/', registerValidator, this.register);
+		this.router.get('/user/token', this.jwtMiddleware.verifyRefreshToken, this.getUserByToken);
 		this.router.get('/user/:userId', this.jwtMiddleware.verifyRefreshToken, this.getUser);
 		this.router.post('/login', this.login);
 	};
@@ -40,6 +41,14 @@ export default class UserController extends ControllerBaseClass implements IUser
 
 	getUser: IUserController['getUser'] = async (req, res) => {
 		const { userId } = req.params;
+		const user = await this.getUserUseCase.execute(userId);
+		res.status(200).json(user).end();
+	};
+
+	getUserByToken: IUserController['getUserByToken'] = async (req, res) => {
+		const { userId } = res.locals;
+		console.log({ userId });
+
 		const user = await this.getUserUseCase.execute(userId);
 		res.status(200).json(user).end();
 	};

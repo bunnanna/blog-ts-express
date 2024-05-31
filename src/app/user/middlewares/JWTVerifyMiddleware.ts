@@ -17,8 +17,9 @@ export class JWTVerifyMiddleware implements IJWTVwerifyMiddleware {
 		if (!refreshToken) return next();
 		const { userId } = this.jwt.verify(refreshToken);
 		console.log(userId);
+		res.locals = { ...res.locals, userId };
 		return next();
 	};
 
-	verifyAccessToken: IJWTVwerifyMiddleware['verifyAccessToken'] = async (req, res, next) => {};
+	// verifyAccessToken: IJWTVwerifyMiddleware['verifyAccessToken'] = async (req, res, next) => {};
 }
