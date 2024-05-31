@@ -28,6 +28,7 @@ export default class UserController extends ControllerBaseClass implements IUser
 		this.router.get('/user/token', this.jwtMiddleware.verifyRefreshToken, this.getUserByToken);
 		this.router.get('/user/:userId', this.jwtMiddleware.verifyRefreshToken, this.getUser);
 		this.router.post('/login', this.login);
+		this.router.post('/logout', this.logout);
 	};
 
 	login: IUserController['login'] = async (req, res) => {
@@ -38,6 +39,8 @@ export default class UserController extends ControllerBaseClass implements IUser
 			.cookie('refreshToken', token, { httpOnly: true, expires: new Date(Date.now() + 1 * 7 * 24 * 60 * 60 * 1000) })
 			.send('login complete');
 	};
+
+	logout: IUserController['logout'] = async (req, res) => res.status(204).clearCookie('refreshToken').end();
 
 	getUser: IUserController['getUser'] = async (req, res) => {
 		const { userId } = req.params;
