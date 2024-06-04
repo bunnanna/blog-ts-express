@@ -25,7 +25,7 @@ export default class UserController extends ControllerBaseClass implements IUser
 
 	apply = () => {
 		this.router.post('/', registerValidator, this.register);
-		this.router.get('/user/token', this.jwtMiddleware.verifyRefreshToken, this.getUserByToken);
+		this.router.get('/user', this.jwtMiddleware.verifyRefreshToken, this.getUserByToken);
 		this.router.get('/user/:userId', this.jwtMiddleware.verifyRefreshToken, this.getUser);
 		this.router.post('/login', this.login);
 		this.router.post('/logout', this.logout);
