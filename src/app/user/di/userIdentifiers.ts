@@ -3,5 +3,6 @@ export const userIdentifier = {
 	IRegisterUseCase: Symbol.for('IRegisterUseCase'),
 	IUserController: Symbol.for('IUserController'),
 	IGetUserUseCase: Symbol.for('IGetUserUseCase'),
-	ILoginUseCase: Symbol.for('ILoginUseCase')
+	ILoginUseCase: Symbol.for('ILoginUseCase'),
+	IJWTVwerifyMiddleware: Symbol.for('IJWTVwerifyMiddleware')
 };

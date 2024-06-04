@@ -3,6 +3,7 @@ import { ValidationBadRequestError } from '@src/core/class/Error';
 import { validationResult } from 'express-validator';
 import { inject, injectable } from 'inversify';
 import { userIdentifier } from '../di/userIdentifiers';
+import { IJWTVwerifyMiddleware } from '../middlewares/IJWTVerifyMiddleware';
 import { registerValidator } from '../middlewares/validator';
 import { IGetUserUseCase } from '../usecase/GetUserUseCase/IGetUserUseCase';
 import { ILoginUseCase } from '../usecase/LoginUseCase/ILoginUsecase';
@@ -14,12 +15,21 @@ export default class UserController extends ControllerBaseClass implements IUser
 	constructor(
 		@inject(userIdentifier.IRegisterUseCase) private registerUseCase: IRegisterUseCase,
 		@inject(userIdentifier.IGetUserUseCase) private getUserUseCase: IGetUserUseCase,
-		@inject(userIdentifier.ILoginUseCase) private loginUseCase: ILoginUseCase
+		@inject(userIdentifier.ILoginUseCase) private loginUseCase: ILoginUseCase,
+		@inject(userIdentifier.IJWTVwerifyMiddleware) private jwtMiddleware: IJWTVwerifyMiddleware
 	) {
 		super();
 		this.apply();
 		console.log(`User Controller Created`);
 	}
+
+	apply = () => {
+		this.router.post('/', registerValidator, this.register);
+		this.router.get('/user', this.jwtMiddleware.verifyRefreshToken, this.getUserByToken);
+		this.router.get('/user/:userId', this.jwtMiddleware.verifyRefreshToken, this.getUser);
+		this.router.post('/login', this.login);
+		this.router.post('/logout', this.logout);
+	};
 
 	login: IUserController['login'] = async (req, res) => {
 		const loginBody = req.body;
@@ -30,14 +40,18 @@ export default class UserController extends ControllerBaseClass implements IUser
 			.send('login complete');
 	};
 
-	apply: CallableFunction = () => {
-		this.router.post('/', registerValidator, this.register);
-		this.router.get('/:userId', this.getUser);
-		this.router.post('/login', this.login);
-	};
+	logout: IUserController['logout'] = async (req, res) => res.status(204).clearCookie('refreshToken').end();
 
 	getUser: IUserController['getUser'] = async (req, res) => {
 		const { userId } = req.params;
+		const user = await this.getUserUseCase.execute(userId);
+		res.status(200).json(user).end();
+	};
+
+	getUserByToken: IUserController['getUserByToken'] = async (req, res) => {
+		const { userId } = res.locals;
+		console.log({ userId });
+
 		const user = await this.getUserUseCase.execute(userId);
 		res.status(200).json(user).end();
 	};

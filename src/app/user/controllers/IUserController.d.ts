@@ -6,4 +6,7 @@ export default interface IUserController {
 	register: RequestHandler<NoParam, MessageResponse, CreateUserEntity>;
 	getUser: RequestHandler<{ userId: string }, UserEntityWithOutPassword>;
 	login: RequestHandler<NoParam, unknown, LoginEntity>;
+	logout: RequestHandler;
+
+	getUserByToken: RequestHandler<NoParam, UserEntityWithOutPassword, unknown, unknown, { userId: string }>;
 }

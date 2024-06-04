@@ -19,6 +19,7 @@ export default class LoginUseCase implements ILoginUseCase {
 
 	execute: ILoginUseCase['execute'] = async (loginBody) => {
 		const { email, password } = loginBody;
+
 		const userData = await this.repository.getByEmail(email);
 		if (!this.encryptService.verify(password, userData.password))
 			throw new BadRequestError('invalid username or password');
